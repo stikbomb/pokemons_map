@@ -58,9 +58,9 @@ def update_pokemon_profile(request, pokemon, pokemon_profile, key):
         {
             key:
                 {
-                    "title_ru": pokemon.previous_evolution.title_ru,
-                    "pokemon_id": pokemon.previous_evolution.id,
-                    "img_url": get_image_url(request, pokemon.previous_evolution.image)
+                    "title_ru": pokemon.title_ru,
+                    "pokemon_id": pokemon.id,
+                    "img_url": get_image_url(request, pokemon.image)
                 }
         }
     )
@@ -77,8 +77,10 @@ def make_pokemon_profile(request, pokemon):
         "img_url": get_image_url(request, pokemon.image)
     }
 
-    if pokemon.previous_evolution:
-        update_pokemon_profile(request, pokemon, pokemon_profile, 'previous_evolution')
+    try:
+        update_pokemon_profile(request, pokemon.previous_evolution, pokemon_profile, 'previous_evolution')
+    except AttributeError:
+        pass
 
     try:
         next_evolution_pokemon = pokemon.next_evolution.get()
