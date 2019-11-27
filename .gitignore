@@ -94,3 +94,4 @@ media/
 .idea/*
 !*/migrations/__init__.py
 migrations*
+*pokemons.json
