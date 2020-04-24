@@ -54,16 +54,11 @@ def make_all_pokemons_profile(request, pokemons):
 
 
 def update_pokemon_profile(request, pokemon, pokemon_profile, key):
-    pokemon_profile.update(
-        {
-            key:
-                {
-                    "title_ru": pokemon.title_ru,
-                    "pokemon_id": pokemon.id,
-                    "img_url": get_image_url(request, pokemon.image)
-                }
-        }
-    )
+    pokemon_profile[key] = {
+                            "title_ru": pokemon.title_ru,
+                            "pokemon_id": pokemon.id,
+                            "img_url": get_image_url(request, pokemon.image)
+                            }
 
 
 def make_pokemon_profile(request, pokemon):
@@ -83,8 +78,8 @@ def make_pokemon_profile(request, pokemon):
         pass
 
     try:
-        next_evolution_pokemon = pokemon.next_evolution.get()
-        update_pokemon_profile(request, next_evolution_pokemon, pokemon_profile, 'next_evolution')
+        next_evolutions_pokemon = pokemon.next_evolutions.get()
+        update_pokemon_profile(request, next_evolutions_pokemon, pokemon_profile, 'next_evolutions')
     except ObjectDoesNotExist:
         pass
 
