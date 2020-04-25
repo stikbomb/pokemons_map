@@ -2,7 +2,7 @@ import folium
 from .models import Pokemon, PokemonEntity
 
 from django.shortcuts import render
-from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 
 MOSCOW_CENTER = [55.751244, 37.618423]
 DEFAULT_IMAGE_URL = "https://vignette.wikia.nocookie.net/pokemon/images/6/6e/%21.png/revision/latest/fixed-aspect-ratio-down/width/240/height/240?cb=20130525215832&fill=transparent"
@@ -77,11 +77,10 @@ def make_pokemon_profile(request, pokemon):
     except AttributeError:
         pass
 
-    try:
-        next_evolutions_pokemon = pokemon.next_evolutions.get()
+    next_evolutions_pokemon = pokemon.next_evolutions.first()
+
+    if next_evolutions_pokemon:
         update_pokemon_profile(request, next_evolutions_pokemon, pokemon_profile, 'next_evolutions')
-    except ObjectDoesNotExist:
-        pass
 
     return pokemon_profile
 
@@ -100,8 +99,11 @@ def show_all_pokemons(request):
 
 
 def show_pokemon(request, pokemon_id):
+    try:
+        pokemon = Pokemon.objects.get(id=pokemon_id)
+    except Pokemon.DoesNotExist:
+        raise Http404("Wrong pokemon ID")
 
-    pokemon = Pokemon.objects.get(id=pokemon_id)
     pokemon_profile = make_pokemon_profile(request, pokemon)
 
     pokemon_entities = pokemon.pokemon_entities.all()
