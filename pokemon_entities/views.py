@@ -104,7 +104,7 @@ def show_pokemon(request, pokemon_id):
     pokemon = Pokemon.objects.get(id=pokemon_id)
     pokemon_profile = make_pokemon_profile(request, pokemon)
 
-    pokemon_entities = PokemonEntity.objects.filter(pokemon=pokemon)
+    pokemon_entities = pokemon.pokemon_entities.all()
 
     folium_map = make_map(request, pokemon_entities)
 
