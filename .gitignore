@@ -92,6 +92,5 @@ media/
 # other
 .idea*
 .idea/*
-!*/migrations/__init__.py
-migrations*
+
 *pokemons.json
